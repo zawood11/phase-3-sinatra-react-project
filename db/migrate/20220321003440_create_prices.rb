@@ -8,6 +8,8 @@ class CreatePrices < ActiveRecord::Migration[6.1]
       t.float :low
       t.float :close
       t.integer :volume
+
+      t.timestamps
     end
   end
 end
