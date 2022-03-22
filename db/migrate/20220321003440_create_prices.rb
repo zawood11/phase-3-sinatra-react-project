@@ -1,6 +1,7 @@
 class CreatePrices < ActiveRecord::Migration[6.1]
   def change
     create_table :prices do |t|
+      t.belongs_to :stock
       t.string :symbol
       t.date :date 
       t.float :open

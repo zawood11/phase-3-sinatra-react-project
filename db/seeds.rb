@@ -1,9 +1,23 @@
 puts "🌱 Seeding data..."
 
+Portfolio.destroy_all
+Position.destroy_all
 Price.destroy_all
 Stock.destroy_all
 
+
 # Seed your database here
+
+#Starter Portfolios
+portfolio1 = Portfolio.create(portfolio_name: "Well Rounded Portfolio")
+portfolio2 = Portfolio.create(portfolio_name: "Super Selective Portfolio")
+
+#Starter Positions
+Position.create(portfolio_id: portfolio1[:id], symbol: "AAPL")
+Position.create(portfolio_id: portfolio1[:id], symbol: "AMZN")
+Position.create(portfolio_id: portfolio1[:id], symbol: "TSLA")
+Position.create(portfolio_id: portfolio2[:id], symbol: "AAPL")
+Position.create(portfolio_id: portfolio2[:id], symbol: "TSLA")
 
 #Starter Stocks
 Stock.create(symbol: "AAPL", name: "Apple Inc", description: "Apple Inc. is an American multinational technology company that specializes in consumer electronics, computer software, and online services. Apple is the world's largest technology company by revenue (totalling $274.5 billion in 2020) and, since January 2021, the world's most valuable company. As of 2021, Apple is the world's fourth-largest PC vendor by unit sales, and fourth-largest smartphone manufacturer. It is one of the Big Five American information technology companies, along with Amazon, Google, Microsoft, and Facebook.")

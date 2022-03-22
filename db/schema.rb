@@ -20,12 +20,15 @@ ActiveRecord::Schema.define(version: 2022_03_21_231428) do
 
   create_table "positions", force: :cascade do |t|
     t.integer "portfolio_id"
-    t.string "symbol"
+    t.integer "stock_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["portfolio_id"], name: "index_positions_on_portfolio_id"
+    t.index ["stock_id"], name: "index_positions_on_stock_id"
   end
 
   create_table "prices", force: :cascade do |t|
+    t.integer "stock_id"
     t.string "symbol"
     t.date "date"
     t.float "open"
@@ -35,6 +38,7 @@ ActiveRecord::Schema.define(version: 2022_03_21_231428) do
     t.integer "volume"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["stock_id"], name: "index_prices_on_stock_id"
   end
 
   create_table "stocks", force: :cascade do |t|
