@@ -1,4 +1,4 @@
-class ApplicationController < Sinatra::Base
+class PortfoliosController < ApplicationController
     set :default_content_type, 'application/json'
     
     # GET: /portfolios
