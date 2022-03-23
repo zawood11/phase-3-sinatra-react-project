@@ -13,20 +13,19 @@ class PortfoliosController < ApplicationController
 
     #POST: /portfolios
     post "/portfolios" do
-        Portfolio.create(params)
+        Portfolio.create(params).to_json
     end
 
     #PATCH: /portfolios/id
     patch "/portfolios/:id" do 
         Portfolio.find(params[:id]).update(
             name: params[:name]
-        )
+        ).to_json
     end
 
     #DELETE: /portfolios/id
     delete "/portfolios/:id" do
-        Portfolio.find(params[:id]).destroy
+        Portfolio.find(params[:id]).destroy.to_json
     end
     
-
 end
