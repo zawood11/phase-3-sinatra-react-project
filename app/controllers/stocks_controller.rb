@@ -13,8 +13,24 @@ class StocksController < ApplicationController
 
     #POST: /stocks
     post "/stocks" do
-        # response = RestClient.get "https://www.alphavantage.co/query?function=OVERVIEW&symbol=MSFT&apikey=LOOC2YV5NOI7NALE"
         Stock.create(params).to_json
+    end
+    
+    #PATCH: /stocks/id
+    patch "/stocks/:id" do
+        @stock = Stock.find(params[:id])
+        symbol = @stock[:symbol]
+
+        response = RestClient.get "https://www.alphavantage.co/query?function=OVERVIEW&symbol=#{symbol}&apikey=LOOC2YV5NOI7NALE"
+        
+        stock_hash = JSON.parse(response)
+        stock_name = stock_hash["Name"] ? stock_hash["Name"] : "No information available"
+        stock_description = stock_hash["Description"] ? stock_hash["Description"] : "No information available"
+
+        @stock.update(
+            name: stock_name,
+            description: stock_description
+        )
     end
 
     #DELETE: /stocks/id
