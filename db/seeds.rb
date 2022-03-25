@@ -25,17 +25,22 @@ Position.create(portfolio_id: portfolio2[:id], stock_id: stock_aapl[:id])
 Position.create(portfolio_id: portfolio2[:id], stock_id: stock_tsla[:id])
 
 #Sample Tickers to start with...(facilitating price data API call through AlphaVantage)
-symbols = [stock_aapl[:symbol], stock_amzn[:symbol], stock_tsla[:symbol]]
+stocks = [stock_aapl, stock_amzn, stock_tsla]
+#symbols = [stock_aapl[:symbol], stock_amzn[:symbol], stock_tsla[:symbol]]
 
 #Call to Alpha Advantage for each ticker (Last 100 days of price history)
-symbols.each do |symbol|
+stocks.each do |stock|
+    symbol = stock[:symbol]
+    stock_id = stock[:id]
+
     response = RestClient.get "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=#{symbol}&apikey=LOOC2YV5NOI7NALE"
 
-    symbol_hash = JSON.parse(response)
+    stock_hash = JSON.parse(response)
 
-    symbol_hash["Time Series (Daily)"].each do |date, info|
+    stock_hash["Time Series (Daily)"].each do |date, info|
 
         Price.create(
+            stock_id: stock_id,
             symbol: symbol,
             date: date,
             open: info["1. open"],
