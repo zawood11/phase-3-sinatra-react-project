@@ -13,11 +13,12 @@ class StocksController < ApplicationController
 
     #POST: /stocks
     post "/stocks" do
+        # response = RestClient.get "https://www.alphavantage.co/query?function=OVERVIEW&symbol=MSFT&apikey=LOOC2YV5NOI7NALE"
         Stock.create(params).to_json
     end
 
     #DELETE: /stocks/id
-    delete "/stocks/id" do
+    delete "/stocks/:id" do
         Stock.find(params[:id]).destroy.to_json
     end
   
