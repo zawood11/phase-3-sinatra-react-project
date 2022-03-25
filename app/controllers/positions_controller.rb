@@ -1,25 +1,24 @@
 class PositionsController < ApplicationController
     set :default_content_type, 'application/json'
     
-    #GET: /stocks
+    #GET: /positions
     get "/positions" do
-        Stock.all.to_json
+        Position.all.to_json
     end
 
-    #GET: /stocks/id
+    #GET: /positions/id
     get "/positions/:id" do
-        Stock.find(params[:id]).to_json
+        Position.find(params[:id]).to_json
     end
 
-    #POST: /stocks
+    #POST: /positions
     post "/positions" do
-        # response = RestClient.get "https://www.alphavantage.co/query?function=OVERVIEW&symbol=MSFT&apikey=LOOC2YV5NOI7NALE"
-        Stock.create(params).to_json
+        Position.create(params).to_json
     end
 
-    #DELETE: /stocks/id
+    #DELETE: /positions/id
     delete "/positions/:id" do
-        Stock.find(params[:id]).destroy.to_json
+        Position.find(params[:id]).destroy.to_json
     end
   
 end
