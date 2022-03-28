@@ -30,7 +30,8 @@ class StocksController < ApplicationController
         @stock.update(
             name: stock_name,
             description: stock_description
-        )
+        ).to_json
+        
     end
 
     #DELETE: /stocks/id
