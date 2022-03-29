@@ -3,12 +3,14 @@ class PortfoliosController < ApplicationController
     
     # GET: /portfolios
     get "/portfolios" do
-      Portfolio.all.to_json
+      portfolios = Portfolio.all
+      portfolios.to_json(include: { positions: { include: :stock } })
     end
 
     # GET: /portfolios/id
     get "/portfolios/:id" do
-        Portfolio.find(params[:id]).to_json
+        portfolio = Portfolio.find(params[:id])
+        portfolio.to_json(include: { positions: { include: :stock } })
     end
 
     #POST: /portfolios
