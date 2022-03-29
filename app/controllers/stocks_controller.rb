@@ -3,12 +3,14 @@ class StocksController < ApplicationController
     
     #GET: /stocks
     get "/stocks" do
-        Stock.all.to_json
+        stocks = Stock.all
+        stocks.to_json(include: :prices)
     end
 
     #GET: /stocks/id
     get "/stocks/:id" do
-        Stock.find(params[:id]).to_json
+        stock = Stock.find(params[:id])
+        stock.to_json(include: :prices)
     end
 
     #POST: /stocks
@@ -31,7 +33,7 @@ class StocksController < ApplicationController
             name: stock_name,
             description: stock_description
         ).to_json
-        
+
     end
 
     #DELETE: /stocks/id
