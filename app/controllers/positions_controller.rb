@@ -3,12 +3,14 @@ class PositionsController < ApplicationController
     
     #GET: /positions
     get "/positions" do
-        Position.all.to_json
+        positions = Position.all
+        positions.to_json(include: [:portfolio, :stock])
     end
 
     #GET: /positions/id
     get "/positions/:id" do
-        Position.find(params[:id]).to_json
+        position = Position.find(params[:id])
+        position.to_json(include: [:portfolio, :stock])
     end
 
     #POST: /positions
