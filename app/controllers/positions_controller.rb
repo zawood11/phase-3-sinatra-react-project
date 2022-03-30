@@ -3,14 +3,17 @@ class PositionsController < ApplicationController
     
     #GET: /positions
     get "/positions" do
-        positions = Position.all
-        positions.to_json(include: [:portfolio, :stock])
+        Position.all.to_json(include: [:portfolio, :stock])
     end
 
     #GET: /positions/id
     get "/positions/:id" do
-        position = Position.find(params[:id])
-        position.to_json(include: [:portfolio, :stock])
+        find_position
+        if @position
+            @position.to_json(include: [:portfolio, :stock])
+        else
+            {errors: "No position found with id: #{params[:id]}"}.to_json
+        end
     end
 
     #POST: /positions
@@ -19,8 +22,18 @@ class PositionsController < ApplicationController
     end
 
     #DELETE: /positions/id
-    delete "/positions/:id" do
-        Position.find(params[:id]).destroy.to_json
+    delete "/positions/id" do
+        find_position
+        if @position&.destroy
+            {messages: "Position id: #{params[:id]} destroyed"}.to_json
+        else
+            {errors: "No position found with id: #{params[:id]}"}.to_json
+        end
     end
-  
+    
+    private
+    
+    def find_position
+        @position = Position.find_by_id(params[:id])
+    end
 end

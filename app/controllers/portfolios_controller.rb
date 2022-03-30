@@ -3,14 +3,17 @@ class PortfoliosController < ApplicationController
     
     # GET: /portfolios
     get "/portfolios" do
-      portfolios = Portfolio.all
-      portfolios.to_json(include: { positions: { include: :stock } })
+      Portfolio.all.to_json(include: { positions: { include: :stock } })
     end
 
     # GET: /portfolios/id
     get "/portfolios/:id" do
-        portfolio = Portfolio.find(params[:id])
-        portfolio.to_json(include: { positions: { include: :stock } })
+        find_portfolio
+        if @portfolio
+            @portfolio.to_json(include: { positions: { include: :stock } })
+        else 
+            {errors: "No portfolio found with id: #{params[:id]}"}.to_json
+        end
     end
 
     #POST: /portfolios
@@ -19,15 +22,31 @@ class PortfoliosController < ApplicationController
     end
 
     #PATCH: /portfolios/id
-    patch "/portfolios/:id" do 
-        Portfolio.find(params[:id]).update(
-            name: params[:name]
-        ).to_json
+    patch "/portfolios/:id" do
+        find_portfolio
+        if @portfolio && portfolio.update(params)
+            @portfolio.to_json
+        elsif !@plant
+            {errors: "No portfolio found with id: #{params[:id]}"}.to_json
+        else
+            {errors: @portfolio.errors.full_messages.to_sentence}.to_json
+        end
     end
 
     #DELETE: /portfolios/id
     delete "/portfolios/:id" do
-        Portfolio.find(params[:id]).destroy.to_json
+        find_portfolio
+        if @portfolio&.destroy
+            {messages: "Portfolio id: #{params[:id]} destroyed"}.to_json
+        else
+            {errors: "No portfolio found with id: #{params[:id]}"}.to_json
+        end
     end
     
+    private
+
+    def find_portfolio 
+        @portfolio = Portfolio.find_by_id(params[:id])
+    end
+
 end

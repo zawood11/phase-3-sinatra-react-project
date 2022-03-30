@@ -14,6 +14,6 @@ use Rack::JSONBodyParser
 # Our application
 use PortfoliosController
 use StocksController
-use PositionsController
 use PricesController
+use PositionsController
 run ApplicationController

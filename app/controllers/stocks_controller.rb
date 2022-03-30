@@ -3,14 +3,17 @@ class StocksController < ApplicationController
     
     #GET: /stocks
     get "/stocks" do
-        stocks = Stock.all
-        stocks.to_json(include: :prices)
+        Stock.all.to_json(include: :prices)
     end
 
     #GET: /stocks/id
     get "/stocks/:id" do
-        stock = Stock.find(params[:id])
-        stock.to_json(include: :prices)
+        find_stock
+        if @stock
+            @stock.to_json(include: :prices)
+        else
+            {errors: "No stock found with id: #{params[:id]}"}.to_json
+        end
     end
 
     #POST: /stocks
@@ -19,8 +22,13 @@ class StocksController < ApplicationController
     end
     
     #PATCH: /stocks/id
-    patch "/stocks/:id" do
-        @stock = Stock.find(params[:id])
+    patch "/stocks/:id" do 
+        find_stock
+        if @stock
+            @stock
+        else {errors: "No stock found with id: #{params[:id]}"}.   to_json
+        end
+
         symbol = @stock[:symbol]
 
         response = RestClient.get "https://www.alphavantage.co/query?function=OVERVIEW&symbol=#{symbol}&apikey=LOOC2YV5NOI7NALE"
@@ -31,14 +39,24 @@ class StocksController < ApplicationController
 
         @stock.update(
             name: stock_name,
+            symbol: symbol.upcase,
             description: stock_description
         ).to_json
-
     end
 
     #DELETE: /stocks/id
     delete "/stocks/:id" do
-        Stock.find(params[:id]).destroy.to_json
+        find_stock
+        if @stock&.destroy
+            {messages: "Stock id: #{params[:id]} destroyed"}.to_json
+        else
+            {errors: "No stock found with id: #{params[:id]}"}.to_json
+        end
     end
-  
+    
+    private
+
+    def find_stock
+        @stock = Stock.find_by_id(params[:id])
+    end
 end
