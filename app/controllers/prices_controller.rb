@@ -18,12 +18,22 @@ class PricesController < ApplicationController
 
     #GET: /prices/stock_id
     get "/prices_by_stock_id/:stock_id" do 
-        Price.where(stock_id: params[:stock_id]).to_json
+        find_prices_by_stock_id
+        if @prices
+            @prices.to_json
+        else
+            {errors: "No prices found belonging to stock id: #{params[:stock_id]}"}.to_json
+        end
     end
 
     #POST: /prices
     post "/prices" do
         Price.create(params).to_json
+    end
+    #POST: /prices_by_stock_id/stock_id
+    post "/prices_by_stock_id/:stock_id" do
+        find_prices_by_stock_id
+        @prices.to_json
     end
 
     #DELETE: /prices/id
@@ -45,5 +55,9 @@ class PricesController < ApplicationController
 
     def find_price
         @price = Price.find_by_id(params[:id])
+    end
+
+    def find_prices_by_stock_id
+        @prices = Price.where(stock_id: params[:stock_id])
     end
 end
