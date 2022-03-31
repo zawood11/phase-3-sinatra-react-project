@@ -1,118 +1,29 @@
-# Phase 3 Project Guidelines
-
-## Learning Goals
-
-- Build a web basic API with Sinatra and Active Record to support a React
-  frontend
-
-## Introduction
-
-Congrats on getting through all the material for Phase 3! Now's the time to put
-it all together and build something from scratch to reinforce what you know and
-expand your horizons.
-
-The focus of this project is **building a Sinatra API backend** that uses
-**Active Record** to access and persist data in a database, which will be used
-by a separate **React frontend** that interacts with the database via the API.
-
-## Requirements
-
-For this project, you must:
-
-- Use Active Record to interact with a database.
-- Have a minimum of two models with a one-to-many relationship.
-- Create API routes in Sinatra that handles at least three different CRUD
-  actions for at least one of your Active Record models.
-- Build a separate React frontend application that interacts with the API to
-  perform CRUD actions.
-- Use good OO design patterns. You should have separate classes for each of your
-  models, and create instance and class methods as necessary.
-
-For example, build a todo list application with a React frontend interface and a
-Sinatra backend API, where a user can:
-
-- **Create** a new todo
-- **Read** a list of all todos
-- **Update** an individual todo
-- **Delete** a todo
-
-A `Todo` can be tagged with a `Category`, so that each todo _belongs to_ a
-category and each category _has many_ todos.
+# Personal Market Research Application
 
 ## Getting Started
+This application is built using a React frontend and Sinatra backend repository. Both repositories are required to utilize the application. You can find the frontend repository here: https://github.com/zawood11/phase-3-sinatra-react-project-frontend. Fork and clone both repos onto your local machine.
 
-### Backend Setup
+### rake server
+Run rake server in the CLI in this folder to launch the Sinatra backend and allow communication to/from the client side.
 
-This repository has all the starter code needed to get a Sinatra backend up and
-running. [**Fork and clone**][fork link] this repository to get started. Then, run
-`bundle install` to install the gems.
+## Description
+This application is designed to allow the user to create and manage multiple portfolios, add/remove stocks to those portfolios, and pull in price data through an API integration with AlphaVantage. 
 
-[fork link]: https://github.com/learn-co-curriculum/phase-3-sinatra-react-project/fork
+More information on AlphaVantage can be found here: https://www.alphavantage.co/. API Documentation here: https://www.alphavantage.co/documentation/.
 
-The `app/controllers/application_controller.rb` file has an example GET route
-handler. Replace this route with routes for your project.
+Below is a brief overview of underlying elements that drive the application.
 
-You can start your server with:
+### Portfolios
+Portfolios serve as the overlying element in this application, where stocks can be added to in order to create a position (Portfolio/Stock combination). Users may add, rename, or delete portfolios as needed.
 
-```console
-$ bundle exec rake server
-```
+### Stocks
+Stocks may be added to the stock database by searching for a ticker/symbol. If that symbol is found in AlphaVantage's database, any company overview information will be pulled from AlphaVantage and added to your database. If no information is found, the stock ticker provided will still be added to your database for monitoring purposes, just without any relevant information.
 
-This will run your server on port
-[http://localhost:9292](http://localhost:9292).
+### Prices
+Price data will also be pulled from AlphaVantage by clicking the 'Load Price Data' button. If price data for that stock is available, the last 100 price data points will be pulled in. Due to server load and the amount of data for full price data retrieval, we do not allow all price history to be downloaded at this time. Please contact your system administrator as needed if you wish to load full price history for a stock.
 
-### Frontend Setup
+### Positions
+Positions are the specific entity that tie a portfolio and stock together. When a user adds a stock to a portfolio, a position is created. Users may add/remove positions to/from any existing portfolio. Please note that in order to a position to a portfolio, the desired stock must be created in the database first.
 
-Your backend and your frontend should be in **two different repositories**.
-
-Create a new repository in a **separate folder** with a React app for your
-frontend. `cd` out of the backend project directory, and use
-[create-react-app][] to generate the necessary code for your React frontend:
-
-```console
-$ npx create-react-app my-app-frontend
-```
-
-After creating the project locally, you should also
-[create a repository on GitHub][create repo] to host your repo and help
-collaborate, if you're working with a partner.
-
-### Fetch Example
-
-Your React app should make fetch requests to your Sinatra backend! Here's an
-example:
-
-```js
-fetch("http://localhost:9292/test")
-  .then((r) => r.json())
-  .then((data) => console.log(data));
-```
-
-## Project Tips
-
-- This project is intended to focus more on the backend than the frontend, so
-  try and keep the React side of things relatively simple. Focus on working with
-  Active Record and performing CRUD actions. What are some interesting queries you can write? What kinds of questions can you ask of your data?
-- Once you have a project idea, come up with a domain model and decide what
-  relationships exist between the models in your application. Use a tool like
-  [dbdiagram.io][] to help visualize your models.
-- Decide on your API endpoints. What data should they return? What kind of CRUD
-  action should they perform? What data do they need from the client?
-- Use [Postman][postman download] to test your endpoints.
-- Use `binding.pry` to debug your requests on the server. It's very helpful to use a
-  `binding.pry` in your controller within a route to see what `params` are being
-  sent.
-- Use the [Network Tab in the Dev Tools][network tab] in the frontend to debug
-  your requests.
-
-## Resources
-
-- [create-react-app][]
-- [dbdiagram.io][]
-- [Postman][postman download]
-
-[create-react-app]: https://create-react-app.dev/docs/getting-started
-[create repo]: https://docs.github.com/en/get-started/quickstart/create-a-repo
-[dbdiagram.io]: https://dbdiagram.io/
-[postman download]: https://www.postman.com/downloads/
-[network tab]: https://developer.chrome.com/docs/devtools/network/
+## Author/Scope
+This application was created by Zach Underwood to satisfy the Phase 3 Project requirements for Flatiron School.
