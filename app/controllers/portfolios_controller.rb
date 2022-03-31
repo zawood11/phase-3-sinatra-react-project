@@ -24,12 +24,12 @@ class PortfoliosController < ApplicationController
     #PATCH: /portfolios/id
     patch "/portfolios/:id" do
         find_portfolio
-        if @portfolio && portfolio.update(params)
-            @portfolio.to_json
-        elsif !@plant
+        if @portfolio
+            @portfolio.update(
+                name: params[:name]
+             ).to_json
+        elsif !@portfolio
             {errors: "No portfolio found with id: #{params[:id]}"}.to_json
-        else
-            {errors: @portfolio.errors.full_messages.to_sentence}.to_json
         end
     end
 
