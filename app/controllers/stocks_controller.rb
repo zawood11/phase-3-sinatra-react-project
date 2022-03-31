@@ -18,7 +18,9 @@ class StocksController < ApplicationController
 
     #POST: /stocks
     post "/stocks" do
-        Stock.create(params).to_json
+        Stock.create(
+            symbol: params[:symbol].upcase
+        ).to_json
     end
     
     #PATCH: /stocks/id
@@ -39,7 +41,7 @@ class StocksController < ApplicationController
 
         @stock.update(
             name: stock_name,
-            symbol: symbol.upcase,
+            symbol: symbol,
             description: stock_description
         ).to_json
     end
