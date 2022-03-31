@@ -48,6 +48,13 @@ class StocksController < ApplicationController
 
     #DELETE: /stocks/id
     delete "/stocks/:id" do
+        find_positions_by_stock_id
+        if @positions&.destroy_all
+            {messages: "Positions with stock id: #{params[:id]}"}.to_json
+        else
+            {errors: "No positions found with stock id: #{params[:id]}"}.to_json
+        end
+
         find_stock
         if @stock&.destroy
             {messages: "Stock id: #{params[:id]} destroyed"}.to_json
@@ -60,5 +67,9 @@ class StocksController < ApplicationController
 
     def find_stock
         @stock = Stock.find_by_id(params[:id])
+    end
+    
+    def find_positions_by_stock_id
+        @positions = Position.where(stock_id: params[:id])
     end
 end
