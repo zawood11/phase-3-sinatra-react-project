@@ -22,9 +22,9 @@ class PositionsController < ApplicationController
     end
 
     #DELETE: /positions/id
-    delete "/positions/id" do
+    delete "/positions/:id" do
         find_position
-        if @position&.destroy
+        if @position.destroy
             {messages: "Position id: #{params[:id]} destroyed"}.to_json
         else
             {errors: "No position found with id: #{params[:id]}"}.to_json
